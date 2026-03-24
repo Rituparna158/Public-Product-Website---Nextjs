@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_shared_stats",
+  "info": {
+    "displayName": "stats"
+  },
+  "options": {},
+  "attributes": {
+    "patients": {
+      "type": "integer"
+    },
+    "doctors": {
+      "type": "integer"
+    },
+    "appointments": {
+      "type": "integer"
+    }
+  },
+  "config": {}
+}

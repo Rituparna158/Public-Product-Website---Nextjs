@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pricing_plans",
+  "info": {
+    "singularName": "pricing-plan",
+    "pluralName": "pricing-plans",
+    "displayName": "Pricing Plan"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "price": {
+      "type": "integer"
+    },
+    "description": {
+      "type": "string"
+    },
+    "features": {
+      "type": "blocks"
+    },
+    "isPopular": {
+      "type": "boolean"
+    }
+  }
+}

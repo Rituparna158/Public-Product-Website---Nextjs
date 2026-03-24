@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_shared_testimonials",
+  "info": {
+    "displayName": "testimonial"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "feedback": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}
