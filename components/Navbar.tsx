@@ -1,9 +1,22 @@
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { HeartPulse } from './Icons';
-import { Hero } from '@/types/landing';
+'use client';
 
-export default function Navbar({ ctaText, ctaLink }: Hero): JSX.Element {
+import Link from 'next/link';
+import { signOut, useSession } from 'next-auth/react';
+import { Button } from '@/components/ui/button';
+import { HeartPulse } from 'lucide-react';
+
+function getInitials(name: string | null | undefined): string {
+  if (!name) return 'U';
+  return name
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase();
+}
+
+export default function Navbar(): JSX.Element {
+  const { data: session, status } = useSession();
+
   return (
     <nav className="nav">
       <Link href="/" className="nav-logo">
@@ -13,25 +26,46 @@ export default function Navbar({ ctaText, ctaLink }: Hero): JSX.Element {
         LifeLine
       </Link>
 
+      {/* LINKS */}
       <ul className="nav-links">
         <li>
-          <a href="/features">Features</a>
+          <Link href="/">Home</Link>
         </li>
         <li>
-          <a href="#use-cases">Solutions</a>
+          <Link href="/features">Features</Link>
         </li>
         <li>
-          <a href="#faq">FAQ</a>
+          <Link href="/pricing">Pricing</Link>
         </li>
         <li>
-          <a href="/pricing">Pricing</a>
+          <Link href="/blog">Blog</Link>
+        </li>
+        <li>
+          <Link href="/dashboard">Dashboard</Link>
         </li>
       </ul>
 
-      {/* shadcn Button used */}
-      <Button asChild className="nav-cta">
-        <a href={ctaLink}>{ctaText}</a>
-      </Button>
+      {/* RIGHT SIDE */}
+      <div className="flex items-center gap-3">
+        {status === 'loading' ? null : session ? (
+          <>
+            {/* USER NAME */}
+            <div className="nav-avatar">{getInitials(session.user?.name)}</div>
+
+            {/* LOGOUT */}
+            <Button
+              onClick={() => signOut({ callbackUrl: '/' })}
+              className="nav-cta"
+            >
+              Logout
+            </Button>
+          </>
+        ) : (
+          <Button asChild className="nav-cta">
+            <Link href="/login">Login</Link>
+          </Button>
+        )}
+      </div>
     </nav>
   );
 }
