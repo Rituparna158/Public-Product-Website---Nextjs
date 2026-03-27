@@ -10,6 +10,12 @@
     },
     "feedback": {
       "type": "text"
+    },
+    "role": {
+      "type": "string"
+    },
+    "initials": {
+      "type": "string"
     }
   },
   "config": {}

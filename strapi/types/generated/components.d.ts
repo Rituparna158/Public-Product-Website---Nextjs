@@ -33,12 +33,14 @@ export interface SharedTestimonial extends Struct.ComponentSchema {
   };
   attributes: {
     feedback: Schema.Attribute.Text;
+    initials: Schema.Attribute.String;
     name: Schema.Attribute.String;
+    role: Schema.Attribute.String;
   };
 }
 
 declare module '@strapi/strapi' {
-  export namespace Public {
+  export module Public {
     export interface ComponentSchemas {
       'shared.hero': SharedHero;
       'shared.stats': SharedStats;

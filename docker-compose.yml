@@ -1,0 +1,21 @@
+version: "3.8"
+ 
+services:
+  nextjs:
+    build: .
+    container_name: nextjs
+    ports:
+      - "3000:3000"
+    depends_on:
+      - strapi
+ 
+  strapi:
+    image: node:20
+    container_name: strapi
+    working_dir: /app
+    volumes:
+      - ./strapi:/app
+    ports:
+      - "1337:1337"
+    command: sh -c "npm install && npm run develop"
+ 
