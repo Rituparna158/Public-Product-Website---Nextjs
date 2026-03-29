@@ -1,4 +1,4 @@
-export default function TrustBar(): JSX.Element {
+export default function TrustBar() {
   const items = [
     'HIPAA Compliant',
     'ISO 27001',

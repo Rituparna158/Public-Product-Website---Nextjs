@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight } from './Icons';
 import { CTAProps } from '@/types/CTA';
 
-export default function CTASection({ hero }: CTAProps): JSX.Element {
+export default function CTASection({ hero }: CTAProps) {
   return (
     <section className="cta-section">
       <div className="cta-bg-circle cta-bg-circle-1" />

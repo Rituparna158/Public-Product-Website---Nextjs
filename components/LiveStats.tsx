@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 
-export default function LiveStats(): JSX.Element {
+export default function LiveStats() {
   const [subscribers, setSubscribers] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -21,6 +21,9 @@ export default function LiveStats(): JSX.Element {
     }
 
     fetchStats();
+    const interval = setInterval(fetchStats, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (

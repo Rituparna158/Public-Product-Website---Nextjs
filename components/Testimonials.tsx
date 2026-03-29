@@ -4,7 +4,7 @@ import { TestimonialsProps } from '@/types/Testimonials';
 
 export default function TestimonialsSection({
   testimonials,
-}: TestimonialsProps): JSX.Element {
+}: TestimonialsProps) {
   return (
     <section className="testimonials-section">
       <div style={{ textAlign: 'center' }}>

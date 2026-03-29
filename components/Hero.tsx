@@ -2,15 +2,9 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ArrowRight, CheckCircle } from './Icons';
 import { HeroProps } from '@/types/Hero';
+import { benefits } from '@/constants/heroSection';
 
-export default function HeroSection({ hero }: HeroProps): JSX.Element {
-  const benefits = [
-    'HIPAA-compliant data security',
-    'Real-time appointment sync',
-    'Automated patient reminders',
-    'Integrated billing & records',
-  ];
-
+export default function HeroSection({ hero }: HeroProps) {
   const titleParts = hero.title.split(' ');
 
   return (
@@ -19,7 +13,6 @@ export default function HeroSection({ hero }: HeroProps): JSX.Element {
       <div className="hero-blob" />
       <div className="hero-blob-2" />
 
-      {/* LEFT */}
       <div className="hero-left">
         <div className="hero-badge">
           <span className="hero-badge-dot" />
@@ -55,7 +48,6 @@ export default function HeroSection({ hero }: HeroProps): JSX.Element {
         </div>
       </div>
 
-      {/* RIGHT CARD (VERY IMPORTANT PRESERVED UI) */}
       <div className="hero-right">
         <Card className="hero-card">
           <div className="hero-card-header">

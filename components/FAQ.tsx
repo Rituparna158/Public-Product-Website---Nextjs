@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight } from './Icons';
 import { FAQProps } from '@/types/FAQ';
 
-export default function FAQSection({ faqs, hero }: FAQProps): JSX.Element {
+export default function FAQSection({ faqs, hero }: FAQProps) {
   return (
     <section className="faq-section" id="faq">
       <div className="faq-layout">

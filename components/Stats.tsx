@@ -2,7 +2,7 @@ import LiveStats from '@/components/LiveStats';
 import { Card } from '@/components/ui/card';
 import { StatsProps } from '@/types/Stats';
 
-export default function StatsSection({ stats }: StatsProps): JSX.Element {
+export default function StatsSection({ stats }: StatsProps) {
   return (
     <section className="stats-section">
       <div className="stats-inner">

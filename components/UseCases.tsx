@@ -1,16 +1,15 @@
 import { Card } from '@/components/ui/card';
 import { Calendar, Users, Shield } from './Icons';
 import { UseCasesProps } from '@/types/UseCases';
+import { ReactNode } from 'react';
 
-const useCaseIcons: Record<number, JSX.Element> = {
+const useCaseIcons: Record<number, ReactNode> = {
   0: <Calendar />,
   1: <Users />,
   2: <Shield />,
 };
 
-export default function UseCasesSection({
-  useCases,
-}: UseCasesProps): JSX.Element {
+export default function UseCasesSection({ useCases }: UseCasesProps) {
   return (
     <section className="section" id="use-cases">
       <div style={{ textAlign: 'center' }}>

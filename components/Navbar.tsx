@@ -4,17 +4,9 @@ import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { HeartPulse } from 'lucide-react';
+import { getInitials } from '@/constants/navbar';
 
-function getInitials(name: string | null | undefined): string {
-  if (!name) return 'U';
-  return name
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase();
-}
-
-export default function Navbar(): JSX.Element {
+export default function Navbar() {
   const { data: session, status } = useSession();
 
   return (
