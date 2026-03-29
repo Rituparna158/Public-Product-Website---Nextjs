@@ -1,18 +1,25 @@
-const API_URL = 'http://localhost:1337/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
-export async function fetchAPI<T>(path: string): Promise<T> {
-  try {
-    const res = await fetch(`${API_URL}${path}`, {
-      next: { revalidate: 60 }, // ISR
-    });
+export async function fetchAPI<T>(path: string): Promise<T | null> {
+  const url = `${API_URL}${path}`;
 
-    if (!res.ok) {
-      throw new Error('Failed to fetch');
+  for (let i = 0; i < 5; i++) {
+    try {
+      const res = await fetch(url, {
+        next: { revalidate: 60 },
+      });
+
+      if (!res.ok) {
+        return null;
+      }
+
+      return await res.json();
+    } catch (error) {
+      console.log(`Retry ${i + 1}...`);
+      await new Promise((r) => setTimeout(r, 2000));
     }
-
-    return res.json() as Promise<T>;
-  } catch (error) {
-    console.log('Fetch error:', error);
-    throw error;
   }
+
+  console.error('API failed after retries');
+  return null;
 }

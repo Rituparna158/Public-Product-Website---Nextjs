@@ -1,16 +1,7 @@
 import type { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-
-interface StrapiUser {
-  id: number;
-  username: string;
-  email: string;
-}
-
-interface StrapiAuthResponse {
-  jwt: string;
-  user: StrapiUser;
-}
+import { STRAPI_URL } from './config';
+import { StrapiAuthResponse } from '@/types/auth';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -25,7 +16,7 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials.password) return null;
 
-        const res = await fetch('http://localhost:1337/api/auth/local', {
+        const res = await fetch(`${STRAPI_URL}/auth/local`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
