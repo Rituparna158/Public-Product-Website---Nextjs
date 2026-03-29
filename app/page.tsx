@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { ApiResponse } from '@/types/landing';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/Hero';
@@ -11,8 +12,24 @@ import NewsletterForm from '@/components/NewsletterForm';
 import Footer from '@/components/Footer';
 import { fetchAPI } from '@/lib/api';
 
-export default async function Home(): Promise<JSX.Element> {
+export const metadata = {
+  title: 'LifeLine Healthcare Platform',
+  description:
+    'Manage patients, appointments, billing, and analytics with a modern healthcare platform built for clinics and hospitals.',
+  openGraph: {
+    title: 'LifeLine Healthcare Platform',
+    description:
+      'All-in-one healthcare management system for clinics and hospitals.',
+    type: 'website',
+  },
+};
+
+export default async function Home() {
   const res = await fetchAPI<ApiResponse>('/landing-page?populate=*');
+
+  if (!res || !res.data) {
+    return <div>Loading...</div>;
+  }
   const landing = res.data;
 
   return (

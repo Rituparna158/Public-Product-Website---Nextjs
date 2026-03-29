@@ -1,35 +1,37 @@
-import Link from 'next/link';
+export const dynamic = 'force-dynamic';
 import { fetchAPI } from '@/lib/api';
-import { Card } from '@/components/ui/card';
 import { BlogResponse } from '@/types/blog';
+import { BlogCard } from '@/components/BlogCard';
+import { SectionHeader } from '@/components/SectionHeader';
+import { PAGE_CONTENT } from '@/constants/pageContent';
 
-export default async function BlogPage(): Promise<JSX.Element> {
-  const res = await fetchAPI<BlogResponse>('/blogs');
+export const metadata = {
+  title: 'Healthcare Blog',
+  description:
+    'Read insights, articles, and updates on healthcare technology and patient management.',
+  openGraph: {
+    title: 'Healthcare Blog',
+    description:
+      'Read insights, articles, and updates on healthcare technology and patient management.',
+    type: 'website',
+  },
+};
+
+export default async function BlogPage() {
+  const res = await fetchAPI<BlogResponse>('/blogs?populate=*');
+
+  const blogs = res?.data || [];
 
   return (
-    <main className="page-container">
-      <h1 className="page-title">Insights & Articles</h1>
+    <main className="page-bg">
+      <div className="section page-content">
+        <SectionHeader {...PAGE_CONTENT.blog} />
 
-      <div className="grid-3">
-        {res.data.map((blog) => {
-          const href = blog.slug ? `/blog/${blog.slug}` : '#'; // fallback
-
-          return (
-            <Link
-              key={blog.id}
-              href={href}
-              className={!blog.slug ? 'pointer-events-none opacity-50' : ''}
-            >
-              <Card className="blog-card">
-                <div className="blog-img" />
-                <div className="blog-content">
-                  <h2>{blog.title}</h2>
-                  <p className="blog-desc">{blog.excerpt}</p>
-                </div>
-              </Card>
-            </Link>
-          );
-        })}
+        <div className="grid-3">
+          {blogs.map((blog) => (
+            <BlogCard key={blog.id} blog={blog} />
+          ))}
+        </div>
       </div>
     </main>
   );

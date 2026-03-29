@@ -1,68 +1,60 @@
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth';
+import { getDashboardData } from '@/lib/dashboard';
 
-interface StatsResponse {
-  totalSubscribers: number;
-}
+import DashboardHeader from '@/components/DashboardHeader';
+import StatsCards from '@/components/StatsCards';
+import RecentAppointments from '@/components/RecentAppointments';
+import QuickPanel from '@/components/QuickPanel';
 
-export default async function Dashboard(): Promise<JSX.Element> {
+import { ShieldIcon } from '@/components/Icons';
+
+export const metadata = {
+  title: 'Dashboard',
+  description: 'View your clinic dashboard and analytics.',
+};
+
+export default async function Dashboard() {
   const session = await getServerSession(authOptions);
 
   if (!session) {
     return (
-      <div className="p-10 text-center">
-        <h1 className="text-2xl font-bold">Unauthorized</h1>
+      <div className="restricted-container">
+        <div className="restricted-icon">
+          <ShieldIcon />
+        </div>
+
+        <h1 className="restricted-title">Access Restricted</h1>
+
+        <p className="restricted-text">
+          You need to sign in to view your dashboard.
+        </p>
+
+        <a href="/login" className="restricted-btn">
+          Sign in to continue
+        </a>
       </div>
     );
   }
 
-  const res = await fetch('http://localhost:3000/api/stats', {
-    cache: 'no-store',
-  });
-
-  const data: StatsResponse = await res.json();
+  const data = await getDashboardData();
 
   return (
-    <main className="p-10">
-      <h1 className="text-2xl font-bold">Welcome {session.user?.name}</h1>
+    <main className="db-page">
+      <DashboardHeader name={session.user?.name} />
 
-      <p className="mt-4">Subscribers: {data.totalSubscribers}</p>
+      <StatsCards
+        data={{
+          patients: data.patients,
+          doctors: data.doctors,
+          appointments: data.appointments,
+        }}
+      />
+
+      <div className="db-content-grid">
+        <RecentAppointments appointments={data.recentAppointments} />
+        <QuickPanel />
+      </div>
     </main>
   );
 }
-
-// import { getServerSession } from "next-auth";
-// import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-// import { Card } from "@/components/ui/card";
-
-// interface StatsResponse {
-//   totalSubscribers: number;
-// }
-
-// export default async function Dashboard(): Promise<JSX.Element> {
-//   const session = await getServerSession(authOptions);
-
-//   if (!session) {
-//     return <div className="page-container">Unauthorized</div>;
-//   }
-
-//   const res = await fetch("http://localhost:3000/api/stats", {
-//     cache: "no-store",
-//   });
-
-//   const data: StatsResponse = await res.json();
-
-//   return (
-//     <main className="page-container">
-//       <Card className="card">
-//         <h1 className="dashboard-title">
-//           Welcome {session.user?.name}
-//         </h1>
-
-//         <p className="dashboard-stat">
-//           Subscribers: {data.totalSubscribers}
-//         </p>
-//       </Card>
-//     </main>
-//   );
-// }

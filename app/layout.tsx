@@ -1,23 +1,24 @@
 import Providers from '@/providers';
 import './globals.css';
 import Navbar from '@/components/Navbar';
-import { Geist, Inter } from "next/font/google";
-import { cn } from "@/lib/utils";
+import { Inter } from 'next/font/google';
+import { cn } from '@/lib/utils';
+import { Toaster } from 'sonner';
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
-
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
-}): JSX.Element {
+}) {
   return (
-    <html lang="en" className={cn("font-sans", inter.variable)}>
+    <html lang="en" className={cn('font-sans', inter.variable)}>
       <body>
         <Providers>
           <Navbar />
           <main>{children}</main>
+          <Toaster position="top-center" richColors />
         </Providers>
       </body>
     </html>
