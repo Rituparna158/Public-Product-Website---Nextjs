@@ -170,8 +170,7 @@ export interface AdminPermission extends Struct.CollectionTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         minLength: 1;
       }>;
-    actionParameters: Schema.Attribute.JSON &
-      Schema.Attribute.DefaultTo<object>;
+    actionParameters: Schema.Attribute.JSON & Schema.Attribute.DefaultTo<object>;
     conditions: Schema.Attribute.JSON & Schema.Attribute.DefaultTo<[]>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -734,6 +733,37 @@ export interface ApiPricingPlanPricingPlan extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiSubscriberSubscriber extends Struct.CollectionTypeSchema {
+  collectionName: 'subscribers';
+  info: {
+    displayName: 'Subscriber';
+    pluralName: 'subscribers';
+    singularName: 'subscriber';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    email: Schema.Attribute.Email &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::subscriber.subscriber'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    Source: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiUseCaseUseCase extends Struct.CollectionTypeSchema {
   collectionName: 'use_cases';
   info: {
@@ -1285,6 +1315,7 @@ declare module '@strapi/strapi' {
       'api::landing-page.landing-page': ApiLandingPageLandingPage;
       'api::patient.patient': ApiPatientPatient;
       'api::pricing-plan.pricing-plan': ApiPricingPlanPricingPlan;
+      'api::subscriber.subscriber': ApiSubscriberSubscriber;
       'api::use-case.use-case': ApiUseCaseUseCase;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
