@@ -1,21 +1,40 @@
-version: "3.8"
- 
 services:
   nextjs:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: nextjs
     ports:
       - "3000:3000"
+    env_file:
+      - .env.docker
     depends_on:
-      - strapi
- 
+      strapi:
+        condition: service_healthy
+    restart: always
+
   strapi:
-    image: node:20
+    build:
+      context: ./strapi
+      dockerfile: Dockerfile
     container_name: strapi
-    working_dir: /app
-    volumes:
-      - ./strapi:/app
     ports:
       - "1337:1337"
-    command: sh -c "npm install && npm run develop"
- 
+    env_file:
+      - ./strapi/.env
+    volumes:
+      - ./strapi/.tmp:/opt/app/.tmp
+      - ./strapi/public/uploads:/opt/app/public/uploads
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:1337/admin').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    restart: always
