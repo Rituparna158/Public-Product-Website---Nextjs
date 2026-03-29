@@ -17,3 +17,27 @@ export interface Plan {
 export interface PricingResponse {
   data: Plan[];
 }
+
+export interface PricingFeatureChild {
+  text: string;
+}
+
+export interface PricingFeatureBlock {
+  children: PricingFeatureChild[];
+}
+
+export interface PricingPlan {
+  id: number;
+  name: string;
+  price: number;
+  features?: PricingFeatureBlock[];
+}
+
+export interface PricingsResponse {
+  data: PricingPlan[];
+}
+
+export interface PriceProps {
+  plan: PricingPlan;
+  highlight?: boolean;
+}
