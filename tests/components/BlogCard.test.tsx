@@ -1,12 +1,12 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 
-// ✅ Next.js mocks (VERY IMPORTANT)
 vi.mock('next/link', () => ({
   default: ({ children }: { children: React.ReactNode }) => <a>{children}</a>,
 }));
 
 vi.mock('next/image', () => ({
+  // eslint-disable-next-line @next/next/no-img-element
   default: (props: { alt: string }) => <img alt={props.alt} />,
 }));
 
@@ -23,7 +23,6 @@ describe('BlogCard', () => {
     coverImage: [{ url: '/img.jpg' }],
   };
 
-  // 🟢 HAPPY
   it('renders blog title and excerpt', () => {
     render(<BlogCard blog={mockBlog} />);
 
@@ -36,7 +35,6 @@ describe('BlogCard', () => {
     expect(screen.getByAltText(/test blog/i)).toBeInTheDocument();
   });
 
-  // 🔴 FAILED
   it('handles missing slug (disabled link)', () => {
     render(<BlogCard blog={{ ...mockBlog, slug: null }} />);
     expect(screen.getByText(/test blog/i)).toBeInTheDocument();
