@@ -1,26 +1,42 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
-import LiveStats from '@/components/LiveStats';
-
-const fetchMock = vi.fn();
-global.fetch = fetchMock as unknown as typeof fetch;
+import { render, screen, waitFor } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import LiveStats from '@/components/LiveStats'
 
 describe('LiveStats', () => {
+  beforeEach(() => {
+    vi.restoreAllMocks()
+  })
+
   it('shows loading initially', () => {
-    render(<LiveStats />);
+    vi.spyOn(global, 'fetch').mockResolvedValue({
+      json: async () => ({ totalSubscribers: 100 }),
+    } as Response)
 
-    expect(screen.getByText('...')).toBeTruthy();
-  });
+    render(<LiveStats />)
 
-  it('shows fetched subscribers', async () => {
-    fetchMock.mockResolvedValueOnce({
-      json: async () => ({ totalSubscribers: 99 }),
-    });
+    expect(screen.getByText('...')).toBeInTheDocument()
+  })
 
-    render(<LiveStats />);
+  it('renders subscribers after fetch', async () => {
+    vi.spyOn(global, 'fetch').mockResolvedValue({
+      json: async () => ({ totalSubscribers: 250 }),
+    } as Response)
+
+    render(<LiveStats />)
 
     await waitFor(() => {
-      expect(screen.getByText('99+')).toBeTruthy();
-    });
-  });
-});
+      expect(screen.getByText('250+')).toBeInTheDocument()
+    })
+  })
+
+  it('handles fetch error gracefully', async () => {
+    vi.spyOn(global, 'fetch').mockRejectedValue(new Error('fail'))
+
+    render(<LiveStats />)
+
+    await waitFor(() => {
+      expect(screen.queryByText('...')).not.toBeInTheDocument()
+    })
+  })
+})
+

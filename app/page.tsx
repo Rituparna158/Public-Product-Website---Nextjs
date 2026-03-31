@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic';
+//export const dynamic = 'force-dynamic';
 import { ApiResponse } from '@/types/landing';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/Hero';

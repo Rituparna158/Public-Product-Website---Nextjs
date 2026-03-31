@@ -1,24 +1,43 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import CTASection from '@/components/CTA';
+import { render, screen } from '@testing-library/react'
+import { describe, it, expect } from 'vitest'
+import CTASection from '@/components/CTA'
 
 describe('CTASection', () => {
-  const hero = {
-    ctaLink: '/signup',
-    ctaText: 'Get Started',
-  };
+  it('renders main texts', () => {
+    const hero = {
+      ctaText: 'Get Started',
+      ctaLink: '/start',
+    }
 
-  it('renders CTA text', () => {
-    render(<CTASection hero={hero} />);
+    render(<CTASection hero={hero} />)
 
-    expect(screen.getByText('Ready to transform your clinic?')).toBeTruthy();
-    expect(screen.getByText('Get Started')).toBeTruthy();
-  });
+    expect(
+      screen.getByText('Ready to transform your clinic?')
+    ).toBeInTheDocument()
 
-  it('renders correct link', () => {
-    render(<CTASection hero={hero} />);
+    expect(screen.getByText('Get Started')).toBeInTheDocument()
+  })
 
-    const link = screen.getByRole('link', { name: /get started/i });
-    expect(link.getAttribute('href')).toBe('/signup');
-  });
-});
+  it('has correct CTA link', () => {
+    const hero = {
+      ctaText: 'Try Now',
+      ctaLink: '/try',
+    }
+
+    render(<CTASection hero={hero} />)
+
+    const link = screen.getByRole('link', { name: /try now/i })
+    expect(link).toHaveAttribute('href', '/try')
+  })
+
+  it('renders secondary button', () => {
+    const hero = {
+      ctaText: 'Join',
+      ctaLink: '/join',
+    }
+
+    render(<CTASection hero={hero} />)
+
+    expect(screen.getByText('See all features')).toBeInTheDocument()
+  })
+})

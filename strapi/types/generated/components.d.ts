@@ -40,7 +40,7 @@ export interface SharedTestimonial extends Struct.ComponentSchema {
 }
 
 declare module '@strapi/strapi' {
-  export namespace Public {
+  export module Public {
     export interface ComponentSchemas {
       'shared.hero': SharedHero;
       'shared.stats': SharedStats;

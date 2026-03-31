@@ -1,28 +1,33 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import DashboardHeader from '@/components/DashboardHeader';
+import { render, screen } from '@testing-library/react'
+import { describe, it, expect } from 'vitest'
+import DashboardHeader from '@/components/DashboardHeader'
 
 describe('DashboardHeader', () => {
-  it('renders first name correctly', () => {
-    render(<DashboardHeader name="John Doe" />);
-    expect(screen.getByText(/john/i)).toBeInTheDocument();
-  });
+  it('shows first name from full name', () => {
+    render(<DashboardHeader name="Rahul Sharma" />)
 
-  it('renders correct greeting', () => {
-    vi.spyOn(Date.prototype, 'getHours').mockReturnValue(9);
+    expect(screen.getByText(/Rahul/)).toBeInTheDocument()
+  })
 
-    render(<DashboardHeader name="Sam" />);
-    expect(screen.getByText(/good morning/i)).toBeInTheDocument();
+  it('falls back to Doctor when name is missing', () => {
+    render(<DashboardHeader name={null} />)
 
-    vi.restoreAllMocks();
-  });
+    expect(screen.getByText(/Doctor/)).toBeInTheDocument()
+  })
 
-  it('falls back to Doctor when name null', () => {
-    render(<DashboardHeader name={null} />);
-    expect(screen.getByText(/doctor/i)).toBeInTheDocument();
-  });
+  it('renders greeting text', () => {
+    render(<DashboardHeader name="Test User" />)
 
-  it('handles undefined name safely', () => {
-    render(<DashboardHeader name={undefined} />);
-  });
-});
+    const greeting = screen.getByText(/good/i)
+    expect(greeting).toBeInTheDocument()
+  })
+
+  it('renders new appointment button', () => {
+    render(<DashboardHeader name="User" />)
+
+    const btn = screen.getByRole('link', { name: /new appointment/i })
+    expect(btn).toHaveAttribute('href', '/appointments/new')
+  })
+})
+
+

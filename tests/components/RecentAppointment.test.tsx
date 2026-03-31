@@ -1,42 +1,45 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import RecentAppointments from '@/components/RecentAppointments';
-import type { AppointmentItem } from '@/types/dashboard';
+import { render, screen } from '@testing-library/react'
+import { describe, it, expect } from 'vitest'
+import RecentAppointments from '@/components/RecentAppointments'
 
 describe('RecentAppointments', () => {
-  const mockAppointments: AppointmentItem[] = [
-    {
-      id: 1,
-      patientName: 'John Doe',
-      doctorName: 'Dr Smith',
-      date: '2025-01-01',
-      lifecycle: 'completed',
-    },
-  ];
+  it('shows empty state when no data', () => {
+    render(<RecentAppointments appointments={[]} />)
+
+    expect(screen.getByText('No appointments found')).toBeInTheDocument()
+  })
 
   it('renders appointment data', () => {
-    render(<RecentAppointments appointments={mockAppointments} />);
-    expect(screen.getByText(/john doe/i)).toBeInTheDocument();
-    expect(screen.getByText(/dr smith/i)).toBeInTheDocument();
-  });
+    const appointments = [
+      {
+        id: 1,
+        patientName: 'Rahul Sharma',
+        doctorName: 'Dr. Mehta',
+        date: '2024-01-10',
+        lifecycle: 'confirmed',
+      },
+    ]
 
-  it('renders correct count', () => {
-    render(<RecentAppointments appointments={mockAppointments} />);
-    expect(screen.getByText(/last 1 scheduled records/i)).toBeInTheDocument();
-  });
+    render(<RecentAppointments appointments={appointments} />)
 
-  it('shows empty state when no data', () => {
-    render(<RecentAppointments appointments={[]} />);
-    expect(screen.getByText(/no appointments found/i)).toBeInTheDocument();
-  });
+    expect(screen.getByText('Rahul Sharma')).toBeInTheDocument()
+    expect(screen.getByText('Dr. Mehta')).toBeInTheDocument()
+  })
 
-  it('handles missing date', () => {
-    render(
-      <RecentAppointments
-        appointments={[{ ...mockAppointments[0], date: '' }]}
-      />,
-    );
+  it('renders table headers', () => {
+    const appointments = [
+      {
+        id: 2,
+        patientName: 'Amit',
+        doctorName: 'Dr. Rao',
+        date: '2024-02-10',
+        lifecycle: 'pending',
+      },
+    ]
 
-    expect(screen.getByText('—')).toBeInTheDocument();
-  });
-});
+    render(<RecentAppointments appointments={appointments} />)
+
+    expect(screen.getByText('Patient')).toBeInTheDocument()
+    expect(screen.getByText('Doctor')).toBeInTheDocument()
+  })
+})

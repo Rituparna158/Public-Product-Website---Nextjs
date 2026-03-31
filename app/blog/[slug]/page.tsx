@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic';
+//export const dynamic = 'force-dynamic';
 import { fetchAPI } from '@/lib/api';
 import { BlogDetailResponse, Blog } from '@/types/blog';
 import { extractRichText } from '@/utils/extraRichText';

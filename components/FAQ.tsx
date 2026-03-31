@@ -13,7 +13,7 @@ export default function FAQSection({ faqs, hero }: FAQProps) {
   return (
     <section className="faq-section" id="faq">
       <div className="faq-layout">
-        {/* LEFT SIDE */}
+        
         <div className="faq-sticky">
           <span className="section-tag">FAQ</span>
 
@@ -34,7 +34,7 @@ export default function FAQSection({ faqs, hero }: FAQProps) {
           </div>
         </div>
 
-        {/* RIGHT SIDE */}
+ 
         <div className="faq-list">
           <Accordion type="single" collapsible>
             {faqs.map((faq) => (

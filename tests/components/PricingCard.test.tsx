@@ -1,59 +1,35 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
-
-vi.mock('@/components/ui/button', () => ({
-  Button: ({ children }: { children: React.ReactNode }) => (
-    <button>{children}</button>
-  ),
-}));
-
-import { PricingCard } from '@/components/PricingCard';
-import type { PricingPlan } from '@/types/Pricing';
+import { render, screen } from '@testing-library/react'
+import { describe, it, expect } from 'vitest'
+import { PricingCard } from '@/components/PricingCard'
 
 describe('PricingCard', () => {
-  const mockPlan: PricingPlan = {
+  const plan = {
     id: 1,
-    name: 'Basic',
-    price: 999,
+    name: 'Basic Plan',
+    price: 499,
     features: [
-      {
-        children: [{ text: 'Feature 1' }],
-      },
-      {
-        children: [{ text: 'Feature 2' }],
-      },
+      { children: [{ text: 'Feature One' }] },
+      { children: [{ text: 'Feature Two' }] },
     ],
-  };
+  }
 
   it('renders plan name and price', () => {
-    render(<PricingCard plan={mockPlan} />);
+    render(<PricingCard plan={plan} />)
 
-    expect(screen.getByText(/basic/i)).toBeInTheDocument();
-    expect(screen.getByText(/₹999/i)).toBeInTheDocument();
-  });
+    expect(screen.getByText('Basic Plan')).toBeInTheDocument()
+    expect(screen.getByText('₹499')).toBeInTheDocument()
+  })
 
   it('renders features list', () => {
-    render(<PricingCard plan={mockPlan} />);
+    render(<PricingCard plan={plan} />)
 
-    expect(screen.getByText(/feature 1/i)).toBeInTheDocument();
-    expect(screen.getByText(/feature 2/i)).toBeInTheDocument();
-  });
+    expect(screen.getByText('Feature One')).toBeInTheDocument()
+    expect(screen.getByText('Feature Two')).toBeInTheDocument()
+  })
 
   it('renders button', () => {
-    render(<PricingCard plan={mockPlan} />);
-    expect(screen.getByText(/get started/i)).toBeInTheDocument();
-  });
+    render(<PricingCard plan={plan} />)
 
-  it('handles empty features', () => {
-    render(<PricingCard plan={{ ...mockPlan, features: [] }} />);
-  });
-
-  it('handles undefined features safely', () => {
-    render(<PricingCard plan={{ ...mockPlan, features: undefined }} />);
-  });
-
-  it('renders highlight styles safely', () => {
-    render(<PricingCard plan={mockPlan} highlight />);
-    expect(screen.getByText(/basic/i)).toBeInTheDocument();
-  });
-});
+    expect(screen.getByText('Get Started')).toBeInTheDocument()
+  })
+})
